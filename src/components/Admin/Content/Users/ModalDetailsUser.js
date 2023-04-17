@@ -6,13 +6,27 @@ import { FcPlus } from 'react-icons/fc';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
+import _ from 'lodash';
+import { apiCreateUser, apiGetRoles, apiUpdateUser } from '../../../../services/apiServices'
+import { AiFillEyeInvisible } from 'react-icons/ai';
 
-import { apiCreateUser, apiGetRoles } from '../../../../services/apiServices'
-
-const ModalCreateUser = (props) => {
-    const { show, setShow, fetchListUser } = props
+const ModalDetailsUser = (props) => {
+    const { show, setShow, fetchListUser, dataUser, btnClickCloseUpdateUser } = props
     const [arrRole, setArrRole] = useState();
+    const [clickSubmit, setClickSubmit] = useState(true)
 
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
+    const [address, setAddress] = useState('');
+    const [gender, setGender] = useState('default');
+    const [role, setRole] = useState('default');
+    const [image, setImage] = useState('');
+    const [previewImage, setPreviewImage] = useState('');
+    const [phone, setPhone] = useState('');
+    const [birthday, setBirthday] = useState('');
+
+    // setPreviewImage('http://drive.google.com/uc?export=view&id=1Cjib0wyJNm5l9s1gzmLdwH1p7ZGe6NzU')
     const getRole = async () => {
         let res = await apiGetRoles();
 
@@ -22,7 +36,22 @@ const ModalCreateUser = (props) => {
     }
     useEffect(() => {
         getRole()
-    }, [])
+        if (!_.isEmpty(dataUser)) {
+            setEmail(dataUser.email)
+            setPassword(dataUser.password)
+            setName(dataUser.name)
+            setAddress(dataUser.address)
+            setGender(dataUser.gender)
+            setRole(dataUser.role[0]._id)
+            setImage(dataUser.image);
+            setBirthday(dataUser.birthday)
+            setPhone(dataUser.phone)
+
+
+        }
+    }, [dataUser])
+
+
 
     const handleClose = () => {
 
@@ -35,63 +64,21 @@ const ModalCreateUser = (props) => {
         setRole('default')
         setImage('')
         setPreviewImage('')
+        btnClickCloseUpdateUser()
     };
-    // const handleShow = () => setShow(true);
-
-
-    const [clickSubmit, setClickSubmit] = useState(true)
-
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
-    const [address, setAddress] = useState('');
-    const [gender, setGender] = useState('default');
-    const [role, setRole] = useState('default');
-    const [image, setImage] = useState('');
-    const [previewImage, setPreviewImage] = useState('');
-    // setPreviewImage('http://drive.google.com/uc?export=view&id=1Cjib0wyJNm5l9s1gzmLdwH1p7ZGe6NzU')
-
-
-
-
-    const handleUploadImage = (event) => {
-        if (event.target && event.target.files && event.target.files[0]) {
-            setPreviewImage(URL.createObjectURL(event.target.files[0]))
-            setImage(event.target.files[0])
-        } else {
-            setPreviewImage("")
-        }
+    const getLinkImage = () => {
+        let splitImage = image.split('/');
+        let getIdImage = splitImage[5];
+        setPreviewImage(`http://drive.google.com/uc?export=view&id=${getIdImage}`)
     }
 
-    const handleSubmitForm = async () => {
-        setClickSubmit(false)
-
-        let data = await apiCreateUser(email, password, name, address, gender, role, image);
-
-        if (data && data.errorCode === 0) {
-            toast.success(data.msg);
-            handleClose()
-            setClickSubmit(true)
-            await fetchListUser();
-        }
-
-        if (data.errorCode == -1) {
-            setClickSubmit(true)
-
-            toast.error(data.msg.message);
-
-        }
-    }
 
     return (
         <>
-            {/* <Button variant="primary" onClick={handleShow}>
-                Launch demo modal
-            </Button> */}
 
             <Modal show={show} onHide={handleClose} size='xl' backdrop='static' className='modal-add-user'>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Modal Details User</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form>
@@ -103,7 +90,8 @@ const ModalCreateUser = (props) => {
                                     className="form-control"
                                     value={email}
                                     onChange={(event) => setEmail(event.target.value)}
-                                    placeholder="Email" />
+                                    placeholder="Email"
+                                    disabled />
                             </div>
                             <div className="form-group col-md-6">
                                 <label>Password</label>
@@ -138,15 +126,39 @@ const ModalCreateUser = (props) => {
                                 />
                             </div>
                         </div>
+                        <div className="row">
+                            <div className="form-group col-md-6">
+                                <label >Phone</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={phone}
+                                    placeholder="phone"
+                                    onChange={(event) => setPhone(event.target.value)}
+                                />
+                            </div>
+                            <div className="form-group col-md-6">
+                                <label >Birthday</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={birthday}
+                                    placeholder="birthday"
+                                    onChange={(event) => setBirthday(event.target.value)}
+                                />
+                            </div>
+                        </div>
 
                         <div className="row">
                             <div className="form-group col-md-6">
                                 <label>Gender</label>
                                 <select id="inputState" className="form-control" value={gender}
                                     onChange={(event) => setGender(event.target.value)}>
+
                                     <option value={'default'} disabled >Choose...</option>
                                     <option value={'0'}>Nam</option>
                                     <option value={'1'}>Nữ</option>
+
                                 </select>
                             </div><div className="form-group col-md-6">
                                 <label >Role</label>
@@ -155,11 +167,19 @@ const ModalCreateUser = (props) => {
                                     <option value={'default'} disabled >Choose...</option>
 
                                     {arrRole && arrRole.length > 0 &&
-                                        arrRole.map((role, index) => {
-                                            return (
-                                                <option key={`${index}-role`} value={role._id} >{role.name}</option>
+                                        arrRole.map((item, index) => {
+                                            if (role === item._id) {
+                                                return (
+                                                    <option key={`${index}-role`} value={item._id} >{item.name}</option>
 
-                                            )
+                                                )
+                                            } else {
+                                                return (
+                                                    <option key={`${index}-role`} value={item._id} >{item.name}</option>
+
+                                                )
+                                            }
+
                                         })
                                     }
                                 </select>
@@ -168,14 +188,14 @@ const ModalCreateUser = (props) => {
                         <div className="form-group">
                             <label className='label-upload' htmlFor='label-upload'>
                                 <AiOutlineCloudUpload /> Upload File Image
-                            </label>
-                            <input type="file" className="form-control" hidden id="label-upload"
-                                onChange={(event) => handleUploadImage(event)} />
+                            </label >
+                            <input disabled type="file" className="form-control" hidden id="label-upload"
+                            />
                         </div>
                         <div className='col-md-12 img-preview'>
                             {previewImage ?
                                 <img src={previewImage} />
-                                : <span>Preview Image</span>
+                                : <span onClick={() => getLinkImage()} className='btn btn-secondary'><AiFillEyeInvisible />Xem ảnh</span>
                             }
                         </div>
                     </form>
@@ -185,17 +205,6 @@ const ModalCreateUser = (props) => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    {clickSubmit ?
-                        <Button variant="primary" onClick={() => handleSubmitForm()}>
-                            Save Changes
-                        </Button>
-                        :
-                        <Button disabled variant="primary" onClick={() => handleSubmitForm()}>
-                            Save Changes
-                        </Button>
-                    }
-
-
 
                 </Modal.Footer>
             </Modal>
@@ -203,4 +212,4 @@ const ModalCreateUser = (props) => {
     );
 }
 
-export default ModalCreateUser
+export default ModalDetailsUser

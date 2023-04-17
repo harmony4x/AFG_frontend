@@ -6,13 +6,23 @@ import { FcPlus } from 'react-icons/fc';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
+import _ from 'lodash';
+import { apiCreateUser, apiGetRoles, apiUpdateUser } from '../../../../services/apiServices'
 
-import { apiCreateUser, apiGetRoles } from '../../../../services/apiServices'
-
-const ModalCreateUser = (props) => {
-    const { show, setShow, fetchListUser } = props
+const ModalUpdateUser = (props) => {
+    const { show, setShow, fetchListUser, dataUser, btnClickCloseUpdateUser } = props
     const [arrRole, setArrRole] = useState();
+    const [clickSubmit, setClickSubmit] = useState(true)
 
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
+    const [address, setAddress] = useState('');
+    const [gender, setGender] = useState('default');
+    const [role, setRole] = useState('default');
+    const [image, setImage] = useState('');
+    const [previewImage, setPreviewImage] = useState('');
+    // setPreviewImage('http://drive.google.com/uc?export=view&id=1Cjib0wyJNm5l9s1gzmLdwH1p7ZGe6NzU')
     const getRole = async () => {
         let res = await apiGetRoles();
 
@@ -22,7 +32,16 @@ const ModalCreateUser = (props) => {
     }
     useEffect(() => {
         getRole()
-    }, [])
+        if (!_.isEmpty(dataUser)) {
+            setEmail(dataUser.email)
+            setPassword(dataUser.password)
+            setName(dataUser.name)
+            setAddress(dataUser.address)
+            setGender(dataUser.gender)
+            setRole(dataUser.role[0]._id)
+        }
+    }, [dataUser])
+
 
     const handleClose = () => {
 
@@ -35,21 +54,12 @@ const ModalCreateUser = (props) => {
         setRole('default')
         setImage('')
         setPreviewImage('')
+        btnClickCloseUpdateUser()
     };
     // const handleShow = () => setShow(true);
 
 
-    const [clickSubmit, setClickSubmit] = useState(true)
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
-    const [address, setAddress] = useState('');
-    const [gender, setGender] = useState('default');
-    const [role, setRole] = useState('default');
-    const [image, setImage] = useState('');
-    const [previewImage, setPreviewImage] = useState('');
-    // setPreviewImage('http://drive.google.com/uc?export=view&id=1Cjib0wyJNm5l9s1gzmLdwH1p7ZGe6NzU')
 
 
 
@@ -66,7 +76,7 @@ const ModalCreateUser = (props) => {
     const handleSubmitForm = async () => {
         setClickSubmit(false)
 
-        let data = await apiCreateUser(email, password, name, address, gender, role, image);
+        let data = await apiUpdateUser(dataUser._id, password, name, address, gender, role);
 
         if (data && data.errorCode === 0) {
             toast.success(data.msg);
@@ -85,13 +95,10 @@ const ModalCreateUser = (props) => {
 
     return (
         <>
-            {/* <Button variant="primary" onClick={handleShow}>
-                Launch demo modal
-            </Button> */}
 
             <Modal show={show} onHide={handleClose} size='xl' backdrop='static' className='modal-add-user'>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Modal Update User</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form>
@@ -103,7 +110,8 @@ const ModalCreateUser = (props) => {
                                     className="form-control"
                                     value={email}
                                     onChange={(event) => setEmail(event.target.value)}
-                                    placeholder="Email" />
+                                    placeholder="Email"
+                                    disabled />
                             </div>
                             <div className="form-group col-md-6">
                                 <label>Password</label>
@@ -144,9 +152,11 @@ const ModalCreateUser = (props) => {
                                 <label>Gender</label>
                                 <select id="inputState" className="form-control" value={gender}
                                     onChange={(event) => setGender(event.target.value)}>
+
                                     <option value={'default'} disabled >Choose...</option>
                                     <option value={'0'}>Nam</option>
                                     <option value={'1'}>Nữ</option>
+
                                 </select>
                             </div><div className="form-group col-md-6">
                                 <label >Role</label>
@@ -155,11 +165,19 @@ const ModalCreateUser = (props) => {
                                     <option value={'default'} disabled >Choose...</option>
 
                                     {arrRole && arrRole.length > 0 &&
-                                        arrRole.map((role, index) => {
-                                            return (
-                                                <option key={`${index}-role`} value={role._id} >{role.name}</option>
+                                        arrRole.map((item, index) => {
+                                            if (role === item._id) {
+                                                return (
+                                                    <option key={`${index}-role`} value={item._id} >{item.name}</option>
 
-                                            )
+                                                )
+                                            } else {
+                                                return (
+                                                    <option key={`${index}-role`} value={item._id} >{item.name}</option>
+
+                                                )
+                                            }
+
                                         })
                                     }
                                 </select>
@@ -168,8 +186,8 @@ const ModalCreateUser = (props) => {
                         <div className="form-group">
                             <label className='label-upload' htmlFor='label-upload'>
                                 <AiOutlineCloudUpload /> Upload File Image
-                            </label>
-                            <input type="file" className="form-control" hidden id="label-upload"
+                            </label >
+                            <input disabled type="file" className="form-control" hidden id="label-upload"
                                 onChange={(event) => handleUploadImage(event)} />
                         </div>
                         <div className='col-md-12 img-preview'>
@@ -203,4 +221,4 @@ const ModalCreateUser = (props) => {
     );
 }
 
-export default ModalCreateUser
+export default ModalUpdateUser
