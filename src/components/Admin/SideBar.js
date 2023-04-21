@@ -62,9 +62,20 @@ const SideBar = (props) => {
                         >
                             <MenuItem>
                                 <Link to={"manage-users"} />
+                                Quản lý tài khoản
+                            </MenuItem>
+                            <MenuItem>
+                                <Link to={"manage-roles"} />
+                                Quản lý roles
+                            </MenuItem>
+                            <MenuItem>
+                                <Link to={"manage-category"} />
                                 Quản lý danh mục
                             </MenuItem>
-                            <MenuItem>Quản lý tài khoản</MenuItem>
+                            <MenuItem>
+                                <Link to={"manage-series"} />
+                                Quản lý series
+                            </MenuItem>
                         </SubMenu>
 
                     </Menu>

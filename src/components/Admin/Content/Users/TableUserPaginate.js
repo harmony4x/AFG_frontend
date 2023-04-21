@@ -1,12 +1,30 @@
 import { useEffect, useState } from "react"
 import { apiGetUser } from "../../../../services/apiUserServices"
+import ReactDOM from 'react-dom';
+import ReactPaginate from 'react-paginate';
 
 
-const TableUser = (props) => {
-
-    const { listUser, fetchListUser, btnClickUpdateUser, btnClickDetailsUser, btnClickDeleteUser } = props
 
 
+const TableUserWithPaginate = (props) => {
+
+    const {
+        listUser,
+        btnClickUpdateUser,
+        btnClickDetailsUser,
+        btnClickDeleteUser,
+        pageCount,
+        setPageCount,
+        fetchListUsersWithPaginate,
+        currentPage,
+        setCurrentPage,
+    } = props
+
+
+    const handlePageClick = (event) => {
+        fetchListUsersWithPaginate(+event.selected + 1)
+        setCurrentPage(+event.selected + 1)
+    };
     return (
         <>
             <table className="table table-hover table-bordered">
@@ -48,9 +66,33 @@ const TableUser = (props) => {
                     </tr>}
                 </tbody>
             </table>
+            <div className="d-flex justify-content-center">
+                <ReactPaginate
+                    nextLabel="Next >"
+                    onPageChange={handlePageClick}
+                    pageRangeDisplayed={3}
+                    marginPagesDisplayed={2}
+                    pageCount={pageCount}
+                    previousLabel="< Prev"
+                    pageClassName="page-item"
+                    pageLinkClassName="page-link"
+                    previousClassName="page-item"
+                    previousLinkClassName="page-link"
+                    nextClassName="page-item"
+                    nextLinkClassName="page-link"
+                    breakLabel="..."
+                    breakClassName="page-item"
+                    breakLinkClassName="page-link"
+                    containerClassName="pagination"
+                    activeClassName="active"
+                    renderOnZeroPageCount={null}
+                    forcePage={currentPage - 1}
+                />
+            </div>
+
         </>
     )
 }
 
 
-export default TableUser
+export default TableUserWithPaginate

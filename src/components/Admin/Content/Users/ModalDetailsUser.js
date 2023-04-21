@@ -7,13 +7,13 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 import _ from 'lodash';
-import { apiCreateUser, apiGetRoles, apiUpdateUser } from '../../../../services/apiServices'
+import { apiCreateUser, apiGetRoles, apiUpdateUser } from '../../../../services/apiUserServices'
 import { AiFillEyeInvisible } from 'react-icons/ai';
 
 const ModalDetailsUser = (props) => {
-    const { show, setShow, fetchListUser, dataUser, btnClickCloseUpdateUser } = props
+    const { show, setShow, fetchListUsersWithPaginate, dataUser, btnClickCloseUser } = props
     const [arrRole, setArrRole] = useState();
-    const [clickSubmit, setClickSubmit] = useState(true)
+
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -64,7 +64,7 @@ const ModalDetailsUser = (props) => {
         setRole('default')
         setImage('')
         setPreviewImage('')
-        btnClickCloseUpdateUser()
+        btnClickCloseUser()
     };
     const getLinkImage = () => {
         let splitImage = image.split('/');

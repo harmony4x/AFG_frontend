@@ -7,10 +7,12 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 
-import { apiCreateUser, apiGetRoles } from '../../../../services/apiServices'
+import { apiCreateUser, apiGetRoles } from '../../../../services/apiUserServices'
 
 const ModalCreateUser = (props) => {
-    const { show, setShow, fetchListUser } = props
+    const { show, setShow, fetchListUsersWithPaginate,
+        currentPage,
+        setCurrentPage, getPageCount } = props
     const [arrRole, setArrRole] = useState();
 
     const getRole = async () => {
@@ -72,7 +74,10 @@ const ModalCreateUser = (props) => {
             toast.success(data.msg);
             handleClose()
             setClickSubmit(true)
-            await fetchListUser();
+            fetchListUsersWithPaginate(1)
+            setCurrentPage(1)
+            getPageCount()
+
         }
 
         if (data.errorCode == -1) {

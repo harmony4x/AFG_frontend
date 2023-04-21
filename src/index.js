@@ -10,6 +10,9 @@ import User from './components/User/User';
 import HomePage from './components/HomePage/HomePage';
 import ManageUsers from './components/Admin/Content/Users/ManageUsers';
 import DashBoard from './components/Admin/Content/Dashboard/Dashboard';
+import ManageRoles from './components/Admin/Content/Role/ManageRole';
+import ManageCategory from './components/Admin/Content/Category/ManageCategory';
+import ManageSeries from './components/Admin/Content/Series/ManageSeries';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -23,6 +26,10 @@ root.render(
         <Route path="admins" element={<Admin />}>
           <Route index element={<DashBoard />} />
           <Route path="manage-users" element={<ManageUsers />} />
+          <Route path="manage-roles" element={<ManageRoles />} />
+          <Route path="manage-category" element={<ManageCategory />} />
+          <Route path="manage-series" element={<ManageSeries />} />
+
         </Route>
       </Routes>
     </BrowserRouter>

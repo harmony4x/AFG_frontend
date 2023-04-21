@@ -7,10 +7,12 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 import _ from 'lodash';
-import { apiCreateUser, apiGetRoles, apiUpdateUser } from '../../../../services/apiServices'
+import { apiCreateUser, apiGetRoles, apiUpdateUser } from '../../../../services/apiUserServices'
 
 const ModalUpdateUser = (props) => {
-    const { show, setShow, fetchListUser, dataUser, btnClickCloseUpdateUser } = props
+    const { show, setShow, fetchListUser, dataUser, btnClickCloseUser, fetchListUsersWithPaginate,
+        currentPage,
+        setCurrentPage, getPageCount } = props
     const [arrRole, setArrRole] = useState();
     const [clickSubmit, setClickSubmit] = useState(true)
 
@@ -54,7 +56,7 @@ const ModalUpdateUser = (props) => {
         setRole('default')
         setImage('')
         setPreviewImage('')
-        btnClickCloseUpdateUser()
+        btnClickCloseUser()
     };
     // const handleShow = () => setShow(true);
 
@@ -79,16 +81,18 @@ const ModalUpdateUser = (props) => {
         let data = await apiUpdateUser(dataUser._id, password, name, address, gender, role);
 
         if (data && data.errorCode === 0) {
-            toast.success(data.msg);
+            toast.success('Update user success');
             handleClose()
             setClickSubmit(true)
-            await fetchListUser();
+            setCurrentPage(1)
+            fetchListUsersWithPaginate(1)
+            getPageCount()
         }
 
         if (data.errorCode == -1) {
             setClickSubmit(true)
 
-            toast.error(data.msg.message);
+            toast.error(data.message);
 
         }
     }

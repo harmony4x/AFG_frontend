@@ -23,6 +23,11 @@ const apiGetUser = () => {
     return axios.get('api/customers?population=role');
 }
 
+const apiGetUserWithPaginate = (page, limit) => {
+    return axios.get(`api/customers?population=role&page=${page}&limit=${limit}`);
+}
+
+
 const apiUpdateUser = (_id, password, name, address, gender, role) => {
     const data = new FormData();
     data.append('_id', _id);
@@ -35,9 +40,16 @@ const apiUpdateUser = (_id, password, name, address, gender, role) => {
     return axios.put('api/customers', data);
 }
 
+const apiDeleteUser = (_id) => {
+
+    return axios.delete('api/customers', { data: { _id } });
+}
+
 export {
     apiGetRoles,
     apiCreateUser,
     apiGetUser,
-    apiUpdateUser
+    apiUpdateUser,
+    apiDeleteUser,
+    apiGetUserWithPaginate
 }
