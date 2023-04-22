@@ -42,8 +42,8 @@ const ModalUpdateSeries = (props) => {
             toast.success(data.msg);
             handleClose()
 
-            setCurrentPage(1)
-            fetchListSeriesWithPaginate(1)
+
+            fetchListSeriesWithPaginate(currentPage)
         }
 
         if (data.errorCode == -1) {

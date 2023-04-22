@@ -11,11 +11,15 @@ import {
 
 import { FaTachometerAlt, FaGem, FaList, FaGithub, FaRegLaughWink, FaHeart } from 'react-icons/fa';
 import sidebarBg from '../../assets/bg2.jpg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const SideBar = (props) => {
     const { image, collapsed, toggled, handleToggleSidebar } = props;
+    const navigate = useNavigate();
+    const handleClickBackHome = () => {
+        navigate('/');
+    }
     return (
         <>
             <ProSidebar
@@ -36,9 +40,13 @@ const SideBar = (props) => {
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             whiteSpace: 'nowrap',
+                            cursor: 'pointer'
                         }}
+                        onClick={() => handleClickBackHome()}
                     >
+
                         Adrift Genz
+
                     </div>
                 </SidebarHeader>
 

@@ -40,8 +40,8 @@ const ModalUpdateCategory = (props) => {
             toast.success(data.msg);
             handleClose()
 
-            setCurrentPage(1)
-            fetchListCategorysWithPaginate(1)
+
+            fetchListCategorysWithPaginate(currentPage)
             getPageCount()
         }
 

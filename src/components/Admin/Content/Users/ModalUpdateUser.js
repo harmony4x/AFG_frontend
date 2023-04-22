@@ -84,8 +84,8 @@ const ModalUpdateUser = (props) => {
             toast.success('Update user success');
             handleClose()
             setClickSubmit(true)
-            setCurrentPage(1)
-            fetchListUsersWithPaginate(1)
+
+            fetchListUsersWithPaginate(currentPage)
             getPageCount()
         }
 

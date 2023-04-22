@@ -1,0 +1,40 @@
+.login-container {
+    .header {
+            text-align: right;
+        }
+
+        .title {
+            font-size: 25px;
+            text-align: center;
+            margin:40px 0 10px 0;
+        }
+
+        .welcome {
+            font-size: 25px;
+            text-align: center;
+            margin: 10px;
+        }
+
+    .content {
+        .form-group { 
+            margin: 10px 0;
+            input {
+                margin-top: 10px;
+            }
+        }
+        button {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .pass-group {
+            position: relative;
+
+            .icons-eye {
+                cursor: pointer;
+                position: absolute;
+                right: 10px;
+                bottom: 10px;
+            }
+        }
+    }
+}

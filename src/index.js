@@ -5,33 +5,16 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Admin from './components/Admin/Admin';
-import User from './components/User/User';
-import HomePage from './components/HomePage/HomePage';
-import ManageUsers from './components/Admin/Content/Users/ManageUsers';
-import DashBoard from './components/Admin/Content/Dashboard/Dashboard';
-import ManageRoles from './components/Admin/Content/Role/ManageRole';
-import ManageCategory from './components/Admin/Content/Category/ManageCategory';
-import ManageSeries from './components/Admin/Content/Series/ManageSeries';
+
+import Layout from './Layout';
+import 'nprogress/nprogress.css';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />}>
-          <Route index element={<HomePage />} />
-          <Route path="users" element={<User />} />
-        </Route>
-        <Route path="admins" element={<Admin />}>
-          <Route index element={<DashBoard />} />
-          <Route path="manage-users" element={<ManageUsers />} />
-          <Route path="manage-roles" element={<ManageRoles />} />
-          <Route path="manage-category" element={<ManageCategory />} />
-          <Route path="manage-series" element={<ManageSeries />} />
-
-        </Route>
-      </Routes>
+      <Layout />
     </BrowserRouter>
   </Provider>
 );
