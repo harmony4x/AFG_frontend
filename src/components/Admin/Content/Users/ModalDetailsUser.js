@@ -44,6 +44,8 @@ const ModalDetailsUser = (props) => {
             setGender(dataUser.gender)
             setRole(dataUser.role[0]._id)
             setImage(dataUser.image);
+            setPreviewImage(dataUser.image);
+
             setBirthday(dataUser.birthday)
             setPhone(dataUser.phone)
 

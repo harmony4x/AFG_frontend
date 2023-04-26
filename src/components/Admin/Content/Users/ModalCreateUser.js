@@ -57,12 +57,12 @@ const ModalCreateUser = (props) => {
 
 
     const handleUploadImage = (event) => {
-        if (event.target && event.target.files && event.target.files[0]) {
-            setPreviewImage(URL.createObjectURL(event.target.files[0]))
-            setImage(event.target.files[0])
-        } else {
-            setPreviewImage("")
-        }
+        // if (event.target && event.target.files && event.target.files[0]) {
+        //     setPreviewImage(URL.createObjectURL(event.target.files[0]))
+        //     setImage(event.target.files[0])
+        // } else {
+        //     setPreviewImage("")
+        // }
     }
 
     const handleSubmitForm = async () => {
@@ -171,10 +171,10 @@ const ModalCreateUser = (props) => {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label className='label-upload' htmlFor='label-upload'>
+                            <label className='label-upload' htmlFor='label-upload' >
                                 <AiOutlineCloudUpload /> Upload File Image
                             </label>
-                            <input type="file" className="form-control" hidden id="label-upload"
+                            <input type="file" className="form-control" disabled hidden id="label-upload"
                                 onChange={(event) => handleUploadImage(event)} />
                         </div>
                         <div className='col-md-12 img-preview'>

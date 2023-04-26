@@ -1,0 +1,22 @@
+
+.nav-dropdown {
+    .drop-down-menu {
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: row;
+        align-items: center;	
+        height: 100%;
+        .avatar-icon {
+            img {
+                width: 30px;
+                border-radius: 50%;
+            }
+        }
+    }
+   .nav-items {
+    .name-text{
+        color: black;
+        font-size: 24px;
+    }
+   }
+}

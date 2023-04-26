@@ -14,7 +14,7 @@ const apiCreateUser = (email, password, name, address, gender, role, image) => {
     data.append('address', address);
     data.append('gender', gender);
     data.append('role', role);
-    data.append('image', image);
+    // data.append('image', image);
 
     return axios.post('api/customer', data);
 }

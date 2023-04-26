@@ -21,7 +21,7 @@ const Login = () => {
     }
     const handleClickLogin = async () => {
         let data = await apiLoginUser(email, password);
-        console.log(data)
+
         if (data && data.errorCode === 0) {
             dispatch(
                 doLogin(data)

@@ -10,7 +10,18 @@ const apiRegisterUser = (email, password, name) => {
     return axios.post('api/register', { email, password, name });
 }
 
+const checkToken = (token) => {
+    return axios.get('api/check-token');
+}
+
+const apiLogout = (refreshToken) => {
+
+    return axios.post('api/logout', { refreshToken });
+}
+
 export {
     apiLoginUser,
-    apiRegisterUser
+    apiRegisterUser,
+    checkToken,
+    apiLogout
 }

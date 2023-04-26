@@ -7,25 +7,53 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
-import { useSelector } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { apiLogout, checkToken } from '../../services/apiAuthService';
+import './header.scss'
+import { toast } from 'react-toastify';
+import { dologout } from '../../redux/action/userAction';
 function NavScrollExample() {
     const [showSearch, isShowHideSearch] = useState(false);
     const [showIconSearch, isShowIconSearch] = useState(true);
+    const [role, setRole] = useState('')
+    const navigate = useNavigate();
+    const isAuthenticated = useSelector(state => state?.user?.isAuthenticated);
+    const access_token = useSelector(state => state?.user?.account?.access_token);
+    const refreshToken = useSelector(state => state?.user?.account?.refresh_token);
+    const user = useSelector(state => state.user);
+    const dispatch = useDispatch();
+
+    const checkRole = async (access_token) => {
+
+        let res = await checkToken(access_token);
+        setRole(res.data)
+    }
+
+    if (isAuthenticated === true) {
+        checkRole(access_token)
+
+    }
     const HandleClickSearch = () => {
         isShowIconSearch(!showIconSearch)
         isShowHideSearch(!showSearch)
     }
-
-    const navigate = useNavigate();
-    const isAuthenticated = useSelector(state => state.user.isAuthenticated);
-    const account = useSelector(state => state.user.account);
 
     const handleClickLogin = () => {
         navigate('/login');
     }
     const handleClickSignUp = () => {
         navigate('/register');
+    }
+
+    const handleClickLogout = async () => {
+        let res = await apiLogout(refreshToken)
+        if (res && res.errorCode === 0) {
+            dispatch(dologout());
+            navigate('/')
+        } else {
+            toast.error(res.msg)
+        }
     }
 
     return (
@@ -42,8 +70,9 @@ function NavScrollExample() {
                     >
                         <NavLink to='/' className='nav-link'>Home</NavLink>
                         <NavLink to='/users' className='nav-link'>Users</NavLink>
-                        <NavLink to='/admins' className='nav-link'>Admins</NavLink>
-
+                        {role === 'admin' &&
+                            <NavLink to='/admins' className='nav-link'>Admins</NavLink>
+                        }
                     </Nav>
                     {showSearch &&
                         <Form className="d-flex mr-5">
@@ -65,13 +94,31 @@ function NavScrollExample() {
                                 <button className='btn-login' onClick={() => handleClickLogin()}>Log In</button>
                                 <button className='btn-signup' onClick={() => handleClickSignUp()}>Sign Up</button>
                             </> :
-                            < NavDropdown title="Setting" id="basic-nav-dropdown">
-                                <NavDropdown.Item href="#action/3.2">
-                                    Profile
+                            < NavDropdown
+                                title={
+                                    <div className='avatar-icon'>
+                                        <img src={user.image}></img>
+                                    </div>
+                                }
+                                id="basic-nav-dropdown"
+                                bsPrefix="drop-down-menu"
+                                className='nav-dropdown'
+                            >
+                                <NavDropdown.Item className="nav-items" href="#action/3.2" disabled>
+                                    <div className='name-text'>
+                                        {user.name}
+                                    </div>
+                                    <div className='email-text'>{user.email}</div>
                                 </NavDropdown.Item>
+
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action/3.4">
-                                    Logout
+
+
+                                <NavDropdown.Item className="nav-items" href="#action/3.2">
+                                    Xem trang cá nhân
+                                </NavDropdown.Item>
+                                <NavDropdown.Item className="nav-items" onClick={() => handleClickLogout()}>
+                                    Đăng xuất
                                 </NavDropdown.Item>
                             </NavDropdown>
                         }

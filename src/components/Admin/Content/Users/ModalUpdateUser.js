@@ -41,6 +41,9 @@ const ModalUpdateUser = (props) => {
             setAddress(dataUser.address)
             setGender(dataUser.gender)
             setRole(dataUser.role[0]._id)
+            setImage(dataUser.image)
+            setPreviewImage(dataUser.image)
+
         }
     }, [dataUser])
 
