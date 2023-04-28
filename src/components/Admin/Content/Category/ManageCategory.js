@@ -124,6 +124,7 @@ const ManageCategory = (props) => {
                 setShow={setShowModalUpdateCategory}
 
                 dataCategory={dataCategory}
+                setDataCategory={setDataCategory}
                 btnClickCloseCategory={btnClickCloseCategory}
                 fetchListCategorysWithPaginate={fetchListCategorysWithPaginate}
                 currentPage={currentPage}

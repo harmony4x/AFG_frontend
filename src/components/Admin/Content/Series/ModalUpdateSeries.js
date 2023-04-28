@@ -14,10 +14,12 @@ import { apiUpdateSeries } from '../../../../services/apiSeriesService';
 const ModalUpdateSeries = (props) => {
     const { show, setShow, dataSeries, btnClickCloseSeries, fetchListSeriesWithPaginate,
         currentPage,
-        setCurrentPage, } = props
+        setCurrentPage, setDataSeries } = props
     const handleClose = () => {
         setShow(false)
-        setTitle('')
+        // setTitle('')
+        // setTitle('')
+        setDataSeries('')
 
     };
 
@@ -30,6 +32,7 @@ const ModalUpdateSeries = (props) => {
 
         if (!_.isEmpty(dataSeries)) {
             setTitle(dataSeries.title)
+            setDescription(dataSeries.description)
         }
     }, [dataSeries])
 

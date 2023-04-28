@@ -10,19 +10,14 @@ const apiGetCategoryWithPaginate = (page, limit) => {
 }
 
 const apiCreateCategory = (title, slug) => {
-    const data = new FormData();
-    data.append('title', title);
 
-    return axios.post('api/categories', data);
+    return axios.post('api/categories', { title });
 }
 
 
 const apiUpdateCategory = (_id, title) => {
 
-    const data = new FormData();
-    data.append('_id', _id);
-    data.append('title', title);
-    return axios.put('api/categories', data);
+    return axios.put('api/categories', { _id, title });
 }
 
 

@@ -6,25 +6,20 @@ const apiGetSeries = () => {
 }
 
 const apiGetSeriesWithPaginate = (page, limit) => {
-    return axios.get(`api/series?page=${page}&limit=${limit}`);
+    return axios.get(`api/series?page=${page}&limit=${limit}&population=userId`);
 }
 
-const apiCreateSeries = (title, description) => {
-    const data = new FormData();
-    data.append('title', title);
-    data.append('description', description);
+const apiCreateSeries = (title, description, userId) => {
 
-    return axios.post('api/series', data);
+    const data = { title, description, userId };
+    return axios.post('api/series', { data });
 }
 
 
 const apiUpdateSeries = (_id, title, description) => {
 
-    const data = new FormData();
-    data.append('_id', _id);
-    data.append('title', title);
-    data.append('description', description);
-    return axios.put('api/series', data);
+    const data = { title, description, _id };
+    return axios.put('api/series', { data });
 }
 
 

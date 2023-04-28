@@ -6,18 +6,13 @@ const apiGetRoles = () => {
 }
 
 const apiCreateRole = (name) => {
-    const data = new FormData();
-    data.append('name', name);
-    return axios.post('api/role', data);
+
+    return axios.post('api/role', { name });
 }
 
 
 const apiUpdateRole = (_id, name) => {
-
-    const data = new FormData();
-    data.append('_id', _id);
-    data.append('name', name);
-    return axios.put('api/role', data);
+    return axios.put('api/role', { _id, name });
 }
 
 

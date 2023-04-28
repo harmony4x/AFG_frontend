@@ -31,6 +31,7 @@ const TableSeriesWithPaginate = (props) => {
                         <th scope="col">Series</th>
                         <th scope="col">Slug</th>
                         <th scope="col">Description</th>
+                        <th scope="col">User</th>
                         <th scope="col">Created At</th>
                         <th scope="col">Updated At</th>
                         <th scope="col">...</th>
@@ -38,13 +39,13 @@ const TableSeriesWithPaginate = (props) => {
                 </thead>
                 <tbody>
                     {listSeries && listSeries.length > 0 && listSeries.map((series, index) => {
-
                         return (
                             <tr key={`table-series-${index}`}>
                                 <th scope="row">{index + 1}</th>
                                 <td>{series.title}</td>
                                 <td>{series.slug}</td>
                                 <td>{series.description}</td>
+                                <td>{series.userId[0].name}</td>
                                 <td>{series.createdAt}</td>
                                 <td>{series.updatedAt}</td>
                                 <td className="d-flex">
@@ -62,29 +63,31 @@ const TableSeriesWithPaginate = (props) => {
                     </tr>}
                 </tbody>
             </table>
-            <div className="d-flex justify-content-center">
-                <ReactPaginate
-                    nextLabel="Next >"
-                    onPageChange={handlePageClick}
-                    pageRangeDisplayed={3}
-                    marginPagesDisplayed={2}
-                    pageCount={pageCount}
-                    previousLabel="< Prev"
-                    pageClassName="page-item"
-                    pageLinkClassName="page-link"
-                    previousClassName="page-item"
-                    previousLinkClassName="page-link"
-                    nextClassName="page-item"
-                    nextLinkClassName="page-link"
-                    breakLabel="..."
-                    breakClassName="page-item"
-                    breakLinkClassName="page-link"
-                    containerClassName="pagination"
-                    activeClassName="active"
-                    renderOnZeroPageCount={null}
-                    forcePage={currentPage - 1}
-                />
-            </div>
+            {pageCount > 1 &&
+                <div className="d-flex justify-content-center">
+                    <ReactPaginate
+                        nextLabel="Next >"
+                        onPageChange={handlePageClick}
+                        pageRangeDisplayed={3}
+                        marginPagesDisplayed={2}
+                        pageCount={pageCount}
+                        previousLabel="< Prev"
+                        pageClassName="page-item"
+                        pageLinkClassName="page-link"
+                        previousClassName="page-item"
+                        previousLinkClassName="page-link"
+                        nextClassName="page-item"
+                        nextLinkClassName="page-link"
+                        breakLabel="..."
+                        breakClassName="page-item"
+                        breakLinkClassName="page-link"
+                        containerClassName="pagination"
+                        activeClassName="active"
+                        renderOnZeroPageCount={null}
+                        forcePage={currentPage - 1}
+                    />
+                </div>
+            }
         </>
     )
 }

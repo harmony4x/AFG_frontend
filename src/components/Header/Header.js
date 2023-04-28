@@ -22,12 +22,14 @@ function NavScrollExample() {
     const access_token = useSelector(state => state?.user?.account?.access_token);
     const refreshToken = useSelector(state => state?.user?.account?.refresh_token);
     const user = useSelector(state => state.user);
+
     const dispatch = useDispatch();
 
     const checkRole = async (access_token) => {
 
         let res = await checkToken(access_token);
-        setRole(res.data)
+        setRole(res.data.role)
+
     }
 
     if (isAuthenticated === true) {
@@ -104,7 +106,7 @@ function NavScrollExample() {
                                 bsPrefix="drop-down-menu"
                                 className='nav-dropdown'
                             >
-                                <NavDropdown.Item className="nav-items" href="#action/3.2" disabled>
+                                <NavDropdown.Item className="nav-items" href="/user" disabled>
                                     <div className='name-text'>
                                         {user.name}
                                     </div>
@@ -114,7 +116,7 @@ function NavScrollExample() {
                                 <NavDropdown.Divider />
 
 
-                                <NavDropdown.Item className="nav-items" href="#action/3.2">
+                                <NavDropdown.Item className="nav-items" href="/users">
                                     Xem trang cá nhân
                                 </NavDropdown.Item>
                                 <NavDropdown.Item className="nav-items" onClick={() => handleClickLogout()}>

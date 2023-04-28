@@ -91,6 +91,7 @@ const ManageRoles = (props) => {
                 fetchListRole={fetchListRole}
                 dataRole={dataRole}
                 btnClickCloseRole={btnClickCloseRole}
+                setDataRole={setDataRole}
             />
 
             <ModalDeleteRol

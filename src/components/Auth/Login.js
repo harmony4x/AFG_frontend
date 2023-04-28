@@ -30,7 +30,15 @@ const Login = () => {
             navigate('/');
         }
         if (data && data.errorCode !== 0) {
-            toast.error(data.msg);
+            if (data.msg === 'Unauthorized') {
+                toast.error('Tài khoản hoặc mật khẩu không chính xác');
+
+            }
+            if (data.msg === 'User not registered') {
+                toast.error('Tài khoản không tồn tại');
+
+            }
+
         }
     }
     return (

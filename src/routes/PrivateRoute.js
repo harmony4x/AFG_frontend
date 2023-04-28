@@ -15,7 +15,8 @@ const PrivateRoute = (props) => {
 
         let res = await checkToken(access_token);
 
-        setRole(res.data)
+        setRole(res.data.role)
+
     }
     useEffect(() => {
         checkRole(access_token)
@@ -39,5 +40,34 @@ const PrivateRoute = (props) => {
         </>
     )
 }
+const PrivateRouteWithUser = (props) => {
+    const isAuthenticated = useSelector(state => state.user.isAuthenticated);
+    const access_token = useSelector(state => state.user.account.access_token);
+    const [role, setRole] = useState('')
 
-export default PrivateRoute;
+    const checkRole = async (access_token) => {
+
+        let res = await checkToken(access_token);
+
+        setRole(res.data.role)
+
+    }
+
+    useEffect(() => {
+        checkRole(access_token)
+
+    }, [])
+    if (!isAuthenticated) {
+        return <Navigate to='/login' />;
+    }
+    return (
+        <>
+            {props.children}
+        </>
+    )
+}
+export {
+    PrivateRoute,
+    PrivateRouteWithUser
+
+};

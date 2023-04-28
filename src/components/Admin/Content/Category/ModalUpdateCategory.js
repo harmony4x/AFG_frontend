@@ -13,10 +13,10 @@ import { apiUpdateCategory } from '../../../../services/apiCategoryService';
 const ModalUpdateCategory = (props) => {
     const { show, setShow, dataCategory, btnClickCloseCategory, fetchListCategorysWithPaginate,
         currentPage,
-        setCurrentPage, getPageCount } = props
+        setCurrentPage, getPageCount, setDataCategory } = props
     const handleClose = () => {
         setShow(false)
-        setTitle('')
+        setDataCategory('')
 
     };
 

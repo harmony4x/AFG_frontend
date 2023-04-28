@@ -11,12 +11,18 @@ import { apiCreateSeries } from '../../../../services/apiSeriesService';
 
 
 
+
 const ModalCreateSeries = (props) => {
     const { show, setShow, fetchListSeriesWithPaginate,
         currentPage,
         setCurrentPage,
-        getPageCount
+        getPageCount,
+        userId
     } = props
+
+
+
+
     const handleClose = () => {
         setShow(false)
         setTitle('')
@@ -27,8 +33,10 @@ const ModalCreateSeries = (props) => {
     const [description, setDescription] = useState('');
 
 
+
     const handleSubmitForm = async () => {
-        let data = await apiCreateSeries(title, description);
+
+        let data = await apiCreateSeries(title, description, userId);
 
         if (data && data.errorCode === 0) {
             toast.success(data.msg);

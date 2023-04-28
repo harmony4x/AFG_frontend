@@ -17,7 +17,7 @@ import DashBoard from './components/Admin/Content/Dashboard/Dashboard';
 import HomePage from './components/HomePage/HomePage';
 import User from './components/User/User';
 import Admin from './components/Admin/Admin';
-import PrivateRoute from './routes/PrivateRoute';
+import { PrivateRoute, PrivateRouteWithUser } from './routes/PrivateRoute';
 
 
 const NotFound = () => {
@@ -35,9 +35,9 @@ const Layout = () => {
                 <Route path="/" element={<App />}>
                     <Route index element={<HomePage />} />
                     <Route path="users" element={
-                        <PrivateRoute>
+                        <PrivateRouteWithUser>
                             <User />
-                        </PrivateRoute>
+                        </PrivateRouteWithUser>
                     } />
                 </Route>
                 <Route path="admins" element={

@@ -5,11 +5,12 @@ import { useState } from "react";
 
 import { useEffect } from "react";
 import { apiGetSeries, apiGetSeriesWithPaginate } from '../../../../services/apiSeriesService';
-import TableSeriesWithPaginate from './TableCategoryPaginate';
+import TableSeriesWithPaginate from './TableSeriesPaginate';
 import ModalCreateSeries from './ModalCreateSeries';
-import ModalUpdateSeries from './ModalUpdateCategory';
+import ModalUpdateSeries from './ModalUpdateSeries';
 import ModalDeleteSeries from './ModalDeleteSeries';
-
+import { useSelector } from 'react-redux';
+import { checkToken } from '../../../../services/apiAuthService';
 
 
 const ManageSeries = (props) => {
@@ -18,15 +19,29 @@ const ManageSeries = (props) => {
     const [showModalCreateSeries, setShowModalCreateSeries] = useState(false);
     const [showModalUpdateSeries, setShowModalUpdateSeries] = useState(false);
     const [showModalDeleteSeries, setShowModalDeleteSeries] = useState(false);
+    const [userId, setUserId] = useState()
 
     const [dataSeries, setDataSeries] = useState({});
     const [listSeries, setListSeries] = useState([])
     const [pageCount, setPageCount] = useState(0)
     const [currentPage, setCurrentPage] = useState(1);
+
+
+    const access_token = useSelector(state => state?.user?.account?.access_token);
+
+    const checkRole = async (access_token) => {
+
+        let res = await checkToken(access_token);
+        setUserId(res.data.userId);
+
+    }
+
     useEffect(() => {
         getPageCount()
         fetchListSeriessWithPaginate(1)
+        checkRole()
     }, [])
+
 
     const fetchListSeries = async () => {
         let res = await apiGetSeries();
@@ -116,12 +131,14 @@ const ManageSeries = (props) => {
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
                 getPageCount={getPageCount}
+                userId={userId}
             />
             <ModalUpdateSeries
                 show={showModalUpdateSeries}
                 setShow={setShowModalUpdateSeries}
 
                 dataSeries={dataSeries}
+                setDataSeries={setDataSeries}
                 btnClickCloseSeries={btnClickCloseSeries}
                 fetchListSeriesWithPaginate={fetchListSeriessWithPaginate}
                 currentPage={currentPage}

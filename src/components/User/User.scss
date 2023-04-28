@@ -1,0 +1,31 @@
+.user-info{
+    .avatar-image{
+        width: 140px;
+        height: 100px;
+        img{
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .info {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        gap: 5px;
+        justify-content: center;
+        .info-name {
+            font-size: 20px;
+        }
+
+        .info-email {
+            color: rgb(82, 78, 78);
+            font-size: 15px;
+        }
+        .btn-info {
+            .btn {
+                margin: 0 !important;
+            }
+        }
+        
+    }
+}

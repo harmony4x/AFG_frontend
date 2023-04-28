@@ -11,10 +11,10 @@ import _ from 'lodash';
 
 
 const ModalUpdateRole = (props) => {
-    const { show, setShow, fetchListRole, dataRole } = props
+    const { show, setShow, fetchListRole, dataRole, setDataRole } = props
     const handleClose = () => {
         setShow(false)
-        setRole('')
+        setDataRole('')
 
     };
 
