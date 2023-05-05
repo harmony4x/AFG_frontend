@@ -11,10 +11,11 @@ import './ModalUpdateUser.scss'
 
 
 const ModalUpdateUser = (props) => {
-    const { show, setShow, dataUser, setDataUser } = props;
+    const { show, setShow, dataUser, setDataUser, getUserById } = props;
 
     const handleShow = () => setShow(true);
 
+    const [_id, setId] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
@@ -35,6 +36,7 @@ const ModalUpdateUser = (props) => {
     const handleClose = () => {
 
         setShow(false)
+        setId(dataUser._id)
         setName(dataUser.name)
         setAddress(dataUser.address)
         setGender(dataUser.gender)
@@ -49,6 +51,7 @@ const ModalUpdateUser = (props) => {
     useEffect(() => {
 
         if (!_.isEmpty(dataUser)) {
+            setId(dataUser._id)
             setEmail(dataUser.email)
             setPassword(dataUser.password)
             setName(dataUser.name)
@@ -74,17 +77,17 @@ const ModalUpdateUser = (props) => {
     }
 
     const handleSubmitForm = async () => {
+
         setClickSubmit(false)
         let cloneBirthday = `${year}-${month}-${day}`
 
-        let data = apiUserUpdateUser(dataUser._id, password, name, address, gender, image, phone, oldImage, cloneBirthday)
-
+        let data = await apiUserUpdateUser(dataUser._id, password, name, address, gender, image, phone, oldImage, cloneBirthday)
+        console.log(data)
         if (data && data.errorCode === 0) {
             toast.success('Update user success');
             handleClose()
             setClickSubmit(true)
-
-
+            getUserById(_id)
         }
 
         if (data.errorCode == -1) {

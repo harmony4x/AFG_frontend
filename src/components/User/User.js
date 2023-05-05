@@ -42,7 +42,7 @@ const User = () => {
     return (
         <div className="container">
             <div className="row mt-5 user-info">
-                <div className="col-md-3">
+                <div className="col-md-3 background-color">
                     <div className="avatar-image">
                         <span style={{ cursor: 'pointer' }} onClick={() => setIsPreviewImage(true)}><img src={dataUser.image} /></span>
                         {isPreviewImage &&
@@ -51,20 +51,34 @@ const User = () => {
                     </div>
                     <div className="info mt-3">
                         <span className="info-name">
-                            Vinh
+                            {dataUser.name}
                         </span>
                         <span className="info-email">
-                            charlenee282@gmail.com
+                            {dataUser.email}
                         </span>
                         <div className='btn-info'>
                             <button className='btn btn-secondary' onClick={() => handleShowModalUpdateUser()}>Chỉnh sửa trang cá nhân</button>
+                        </div>
+                        <div className='populate'>
+                            <div className='populate-content'>
+                                <span>0</span>
+                                <span>followers</span>
+                            </div>
+                            <div className='populate-content'>
+                                <span>0</span>
+                                <span>following</span>
+                            </div>
+                            <div className='populate-content'>
+                                <span>0</span>
+                                <span>spiders</span>
+                            </div>
                         </div>
                         <ModalUpdateUser
                             show={show}
                             setShow={setShow}
                             dataUser={dataUser}
                             setDataUser={setDataUser}
-
+                            getUserById={getUserById}
                         />
                     </div>
                 </div>

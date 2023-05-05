@@ -57,8 +57,6 @@ const apiUserUpdateUser = (_id, password, name, address, gender, image, phone, o
     data.append('image', image);
     data.append('oldImage', oldImage);
     data.append('birthday', birthday);
-
-
     return axios.put('api/customers', data);
 
 }

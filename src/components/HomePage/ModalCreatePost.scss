@@ -1,0 +1,36 @@
+
+.img-post-preview {
+    height: 100px;
+    border: 1px dashed #ccc;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ccc;
+
+    span{
+        
+        height: 100%;
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    }
+}
+
+.label-upload {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: none;
+    width: fit-content;
+    padding: 3px 10px;
+    border-radius: 5px;
+    background: #eee;
+    cursor: pointer;
+    margin: 20px 0 20px 0;
+    
+    &:hover {
+        background:#c2b8b8;
+    }
+}

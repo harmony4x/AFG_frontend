@@ -13,10 +13,20 @@ import { apiLogout, checkToken } from '../../services/apiAuthService';
 import './header.scss'
 import { toast } from 'react-toastify';
 import { dologout } from '../../redux/action/userAction';
+import { GiFeather } from 'react-icons/gi';
+import { BsSearch } from 'react-icons/bs';
+import { BiSearch } from 'react-icons/bi';
+import { MdArrowBack } from 'react-icons/md';
+import { FaBars } from 'react-icons/fa';
+import ModalCreatePost from '../HomePage/ModalCreatePost';
+
 function NavScrollExample() {
+    const [showModalCreatePost, setShowModalCreatePost] = useState(false)
     const [showSearch, isShowHideSearch] = useState(false);
     const [showIconSearch, isShowIconSearch] = useState(true);
     const [role, setRole] = useState('')
+    const [_id, setId] = useState('');
+
     const navigate = useNavigate();
     const isAuthenticated = useSelector(state => state?.user?.isAuthenticated);
     const access_token = useSelector(state => state?.user?.account?.access_token);
@@ -29,7 +39,7 @@ function NavScrollExample() {
 
         let res = await checkToken(access_token);
         setRole(res.data.role)
-
+        setId(res.data.userId)
     }
 
     if (isAuthenticated === true) {
@@ -37,6 +47,10 @@ function NavScrollExample() {
 
     }
     const HandleClickSearch = () => {
+        isShowIconSearch(!showIconSearch)
+        isShowHideSearch(!showSearch)
+    }
+    const HandleHideSearch = () => {
         isShowIconSearch(!showIconSearch)
         isShowHideSearch(!showSearch)
     }
@@ -51,6 +65,7 @@ function NavScrollExample() {
     const handleClickLogout = async () => {
         let res = await apiLogout(refreshToken)
         if (res && res.errorCode === 0) {
+            setRole('')
             dispatch(dologout());
             navigate('/')
         } else {
@@ -59,75 +74,141 @@ function NavScrollExample() {
     }
 
     return (
-        <Navbar bg="light" expand="lg">
-            <Container>
-                {/* <Navbar.Brand href="#"> Adrift Genz</Navbar.Brand> */}
-                <Link to='/' className='navbar-brand'> Adrift Genz</Link>
-                <Navbar.Toggle aria-controls="navbarScroll" />
-                <Navbar.Collapse id="navbarScroll">
-                    <Nav
-                        className="me-auto my-2 my-lg-0 navbar-nav"
-                        style={{ maxHeight: '100px' }}
-                        navbarScroll
-                    >
-                        <NavLink to='/' className='nav-link'>Home</NavLink>
-                        <NavLink to='/users' className='nav-link'>Users</NavLink>
-                        {role === 'admin' &&
-                            <NavLink to='/admins' className='nav-link'>Admins</NavLink>
-                        }
-                    </Nav>
-                    {showSearch &&
-                        <Form className="d-flex mr-5">
-                            <Form.Control
-                                show={showSearch}
-                                type="search"
-                                placeholder="Search"
-                                className="me-2"
-                                aria-label="Search"
-                            />
-                            <Button variant="outline-success">Search</Button>
-                        </Form>
-                    }
+        <>
+            <Navbar bg="light" expand="lg">
+                <Container>
+                    {/* <Navbar.Brand href="#"> Adrift Genz</Navbar.Brand> */}
+                    <Link to='/' className='navbar-brand'> Adrift Genz</Link>
+                    <Navbar.Toggle aria-controls="navbarScroll" />
+                    <Navbar.Collapse id="navbarScroll">
+                        <Nav
+                            className="me-auto my-2 my-lg-0 navbar-nav"
+                            style={{ maxHeight: '100px' }}
+                            navbarScroll
+                        >
+                            <NavLink to='/' className='nav-link'>Home</NavLink>
+                            <NavLink to='/users' className='nav-link'>Users</NavLink>
+                            {role === 'admin' &&
+                                <NavLink to='/admins' className='nav-link'>Admins</NavLink>
+                            }
+                        </Nav>
+                        {showSearch &&
+                            <div className='div-form-search'>
+                                <MdArrowBack className='back-search' onClick={() => HandleHideSearch()} />
+                                <Form className="d-flex mr-5 form-search">
+                                    <Form.Control
+                                        show={showSearch}
+                                        type="search"
+                                        placeholder="Search"
+                                        className="me-2"
+                                        aria-label="Search"
 
-                    {showIconSearch && <Button onClick={() => HandleClickSearch()} variant="outline-success">FaSearch</Button>}
-                    <Nav>
-                        {isAuthenticated === false ?
-                            <>
-                                <button className='btn-login' onClick={() => handleClickLogin()}>Log In</button>
-                                <button className='btn-signup' onClick={() => handleClickSignUp()}>Sign Up</button>
-                            </> :
+                                    />
+                                    <Button className='btn btn-light outline-secondary btn-search' ><BiSearch /></Button>
+                                </Form>
+                            </div>
+
+                        }
+
+                        {showIconSearch && <Button className='btn btn-light outline-secondary btn-show-search' onClick={() => HandleClickSearch()} ><BsSearch /></Button>}
+                        {
+                            isAuthenticated === true ?
+                                <>
+                                    <button className='btn btn-create' onClick={() => setShowModalCreatePost(true)}><GiFeather /> Viết bài</button>
+                                    <ModalCreatePost
+                                        show={showModalCreatePost}
+                                        setShow={setShowModalCreatePost}
+                                        _id={_id}
+                                    />
+                                </>
+                                : ''
+                        }
+
+                        <Nav>
+                            {isAuthenticated === false ?
+                                <>
+                                    <button className='btn-login' onClick={() => handleClickLogin()}>Log In</button>
+                                    <button className='btn-signup' onClick={() => handleClickSignUp()}>Sign Up</button>
+                                </> :
+                                < NavDropdown
+                                    title={
+                                        <div className='avatar-icon'>
+                                            <img src={user.image}></img>
+                                        </div>
+                                    }
+                                    id="basic-nav-dropdown"
+                                    bsPrefix="drop-down-menu"
+                                    className='nav-dropdown'
+                                >
+                                    <NavDropdown.Item className="nav-items" href="/user" disabled>
+                                        <div className='name-text'>
+                                            {user.name}
+                                        </div>
+                                        <div className='email-text'>{user.email}</div>
+                                    </NavDropdown.Item>
+
+                                    <NavDropdown.Divider />
+
+
+                                    <NavDropdown.Item className="nav-items" href="/users">
+                                        Xem trang cá nhân
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item className="nav-items" onClick={() => handleClickLogout()}>
+                                        Đăng xuất
+                                    </NavDropdown.Item>
+                                </NavDropdown>
+                            }
+                        </Nav>
+                    </Navbar.Collapse>
+
+                </Container>
+
+            </Navbar>
+            <div className='container'>
+                <div className='row category-parent'>
+                    <div className='col-md-9 category'>
+                        <div className='category-item'>Danh muc 1</div>
+                        <div className='category-item'>Danh muc 1</div>
+                        <div className='category-item'>Danh muc 1</div>
+                        <div className='category-item'>Danh muc 1</div>
+                        <div className='category-item'>Danh muc 5</div>
+                    </div>
+                    <div className='col-md-3 right-category'>
+                        <Nav>
+
                             < NavDropdown
                                 title={
                                     <div className='avatar-icon'>
-                                        <img src={user.image}></img>
+                                        <FaBars />
                                     </div>
                                 }
                                 id="basic-nav-dropdown"
                                 bsPrefix="drop-down-menu"
                                 className='nav-dropdown'
                             >
-                                <NavDropdown.Item className="nav-items" href="/user" disabled>
-                                    <div className='name-text'>
-                                        {user.name}
-                                    </div>
-                                    <div className='email-text'>{user.email}</div>
+                                <NavDropdown.Item className="nav-items" href="#">
+                                    Danh mục 1
+
                                 </NavDropdown.Item>
 
-                                <NavDropdown.Divider />
 
 
-                                <NavDropdown.Item className="nav-items" href="/users">
-                                    Xem trang cá nhân
+                                <NavDropdown.Item className="nav-items" href="#">
+                                    Danh mục 2
+
                                 </NavDropdown.Item>
-                                <NavDropdown.Item className="nav-items" onClick={() => handleClickLogout()}>
-                                    Đăng xuất
+                                <NavDropdown.Item className="nav-items">
+                                    Danh mục 3
+
                                 </NavDropdown.Item>
                             </NavDropdown>
-                        }
-                    </Nav>
-                </Navbar.Collapse>
-            </Container>
-        </Navbar>
+
+                        </Nav>
+                    </div>
+                </div>
+
+            </div>
+        </>
     );
 }
 

@@ -45,18 +45,18 @@ const PrivateRouteWithUser = (props) => {
     const access_token = useSelector(state => state.user.account.access_token);
     const [role, setRole] = useState('')
 
-    const checkRole = async (access_token) => {
+    // const checkRole = async (access_token) => {
 
-        let res = await checkToken(access_token);
+    //     let res = await checkToken(access_token);
 
-        setRole(res.data.role)
+    //     setRole(res.data.role)
 
-    }
+    // }
 
-    useEffect(() => {
-        checkRole(access_token)
+    // useEffect(() => {
+    //     checkRole(access_token)
 
-    }, [])
+    // }, [])
     if (!isAuthenticated) {
         return <Navigate to='/login' />;
     }

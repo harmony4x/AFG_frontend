@@ -21,6 +21,9 @@ const App = () => {
           <Outlet />
         </div>
       </div>
+      <div className='footer-container'>
+
+      </div>
     </div>
   );
 }
