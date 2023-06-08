@@ -29,6 +29,13 @@ const apiGetUserById = (_id) => {
     return axios.post('api/customerbyId', { _id });
 }
 
+const apiGetUserByEmail = (email) => {
+
+    let newEmail = email + '@gmail.com';
+
+    return axios.get(`api/customer/${newEmail}`);
+}
+
 const apiGetUserWithPaginate = (page, limit) => {
     return axios.get(`api/customers?population=role&page=${page}&limit=${limit}`);
 }
@@ -74,5 +81,6 @@ export {
     apiDeleteUser,
     apiGetUserWithPaginate,
     apiGetUserById,
-    apiUserUpdateUser
+    apiUserUpdateUser,
+    apiGetUserByEmail
 }

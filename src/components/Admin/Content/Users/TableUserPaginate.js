@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, React } from "react"
 import { apiGetUser } from "../../../../services/apiUserServices"
 import ReactDOM from 'react-dom';
 import ReactPaginate from 'react-paginate';
@@ -47,7 +47,7 @@ const TableUserWithPaginate = (props) => {
                                 <th scope="row">{index + 1}</th>
                                 <td>{user.email}</td>
                                 <td>{user.name}</td>
-                                <td>{user.role[0].name}</td>
+                                <td>{user.role.name}</td>
                                 <td>{user.createdAt}</td>
                                 <td>{user.updatedAt}</td>
                                 <td>

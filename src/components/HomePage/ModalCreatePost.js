@@ -7,30 +7,44 @@ import { toast } from 'react-toastify';
 import './ModalCreatePost.scss';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter';
+import MyEditor from '../../utils/myEditor';
+import { apiGetSeriesById } from '../../services/apiSeriesService';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { apiGetCategory } from '../../services/apiCategoryService';
+import { apiCreatePost } from '../../services/apiPostService';
+
 
 
 const ModalCreatePost = (props) => {
-    const { show, setShow, _id } = props;
+    const { show, setShow, _id, arrSeries, categoryArr } = props;
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [content, setContent] = useState('');
     const [image, setImage] = useState('');
     const [previewImage, setPreviewImage] = useState('')
     const [isPreviewImage, setIsPreviewImage] = useState(false)
+    const [category, setCategory] = useState('default');
+    const [series, setSeries] = useState('default');
+
+
+
 
     const [clickSubmit, setClickSubmit] = useState(true)
 
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setShow(false)
+        setTitle('')
+        setDescription('')
+        setContent('')
+        setImage('')
+        setPreviewImage('')
+        setIsPreviewImage(false)
+        setCategory('default')
+        setSeries('default')
+
+    };
     const handleShow = () => setShow(true);
-    console.log(content)
-    ClassicEditor
-        .create(document.querySelector('#editor'), {
-            plugins: [Base64UploadAdapter, /* ... */],
-            toolbar: [ /* ... */]
-        })
-        .then( /* ... */)
-        .catch( /* ... */);
 
     const handleUploadImage = (event) => {
         if (event.target && event.target.files && event.target.files[0]) {
@@ -41,6 +55,32 @@ const ModalCreatePost = (props) => {
             setPreviewImage("")
         }
     }
+
+    const handleSubmitForm = async () => {
+        setClickSubmit(false)
+
+        let data = await apiCreatePost(title, description, content, image, category, series, _id);
+
+        if (data && data.status === 200) {
+            toast.success(data.message);
+            handleClose()
+            setClickSubmit(true)
+
+
+        }
+
+        if (data.status !== 200) {
+            setClickSubmit(true)
+
+            toast.error(data.message);
+
+        }
+    }
+
+
+
+
+
     return (
         <>
 
@@ -51,27 +91,63 @@ const ModalCreatePost = (props) => {
                 <Modal.Body>
                     <form>
                         <div className="row">
+                            <div className='col-md-9'>
+                                <div className="row">
+                                    <div className="form-group col-md-4">
+                                        <label>Tên bài viết</label>
+                                        <input
+                                            type="email"
+                                            className="form-control"
+                                            value={title}
+                                            onChange={(event) => setTitle(event.target.value)}
+                                            placeholder="Tiêu đề bài viết ...."
 
-                            <div className="form-group col-md-3">
-                                <label>Tên bài viết</label>
-                                <input
-                                    type="email"
-                                    className="form-control"
-                                    value={title}
-                                    onChange={(event) => setTitle(event.target.value)}
-                                    placeholder="Tiêu đề bài viết ...."
+                                        />
+                                    </div>
+                                    <div className="form-group col-md-4">
+                                        <label>Thể loại danh mục </label>
+                                        <select id="inputState" className="form-control" value={category}
+                                            onChange={(event) => setCategory(event.target.value)}>
+                                            <option value={'default'} disabled >Choose...</option>
+                                            {categoryArr && categoryArr.length > 0 &&
+                                                categoryArr.map((cat, index) => {
+                                                    return (
+                                                        <option key={`${index}-role`} value={cat._id} >{cat.title}</option>
 
-                                />
-                            </div>
-                            <div className="form-group col-md-6">
-                                <label >Mô tả bài viết</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={description}
-                                    placeholder="Nhập ít thôi nha ..."
-                                    onChange={(event) => setDescription(event.target.value)}
-                                />
+                                                    )
+                                                })
+                                            }
+                                        </select>
+                                    </div>
+                                    <div className="form-group col-md-4">
+                                        <label>Thuộc series</label>
+
+                                        <select id="inputState" className="form-control" value={series}
+                                            onChange={(event) => setSeries(event.target.value)}>
+                                            <option value={'default'} disabled >Choose...</option>
+                                            {arrSeries && arrSeries.length > 0 &&
+                                                arrSeries.map((series, index) => {
+                                                    return (
+                                                        <option key={`${index}-role`} value={series._id} >{series.title}</option>
+
+                                                    )
+                                                })
+                                            }
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                                <div className="form-group col-md-12">
+                                    <label >Mô tả bài viết</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={description}
+                                        placeholder="Nhập ít thôi nha ..."
+                                        onChange={(event) => setDescription(event.target.value)}
+                                    />
+                                </div>
                             </div>
                             <div className="form-group col-md-1 mt-2">
                                 <label className='label-upload' htmlFor='label-upload' >
@@ -92,24 +168,10 @@ const ModalCreatePost = (props) => {
 
                         </div>
                         <div className='form-group mt-4'>
-                            <CKEditor
-                                editor={ClassicEditor}
-                                data={content}
 
-                                onReady={editor => {
-                                    editor.editing.view.change((write) => {
-                                        write.setStyle(
-                                            "height",
-                                            "400px",
-                                            editor.editing.view.document.getRoot()
-                                        )
-                                    })
-                                }}
-                                onChange={(event, editor) => {
-                                    const data = editor.getData();
-                                    setContent(data)
-                                }}
-
+                            <MyEditor
+                                content={content}
+                                setContent={setContent}
                             />
 
                         </div>
@@ -120,9 +182,15 @@ const ModalCreatePost = (props) => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
-                    </Button>
+                    {clickSubmit ?
+                        <Button variant="primary" onClick={() => handleSubmitForm()}>
+                            Save Changes
+                        </Button>
+                        :
+                        <Button disabled variant="primary" onClick={() => handleSubmitForm()}>
+                            Save Changes
+                        </Button>
+                    }
                 </Modal.Footer>
             </Modal>
         </>

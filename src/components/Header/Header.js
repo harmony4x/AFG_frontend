@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, React } from 'react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -9,16 +9,18 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { apiLogout, checkToken } from '../../services/apiAuthService';
+import { apiLogout, checkToken, refreshNewToken } from '../../services/apiAuthService';
 import './header.scss'
 import { toast } from 'react-toastify';
-import { dologout } from '../../redux/action/userAction';
+import { doRefreshToken, dologout } from '../../redux/action/userAction';
 import { GiFeather } from 'react-icons/gi';
 import { BsSearch } from 'react-icons/bs';
 import { BiSearch } from 'react-icons/bi';
 import { MdArrowBack } from 'react-icons/md';
 import { FaBars } from 'react-icons/fa';
 import ModalCreatePost from '../HomePage/ModalCreatePost';
+import { apiGetCategory } from '../../services/apiCategoryService';
+import { apiGetSeriesById } from '../../services/apiSeriesService';
 
 function NavScrollExample() {
     const [showModalCreatePost, setShowModalCreatePost] = useState(false)
@@ -26,6 +28,10 @@ function NavScrollExample() {
     const [showIconSearch, isShowIconSearch] = useState(true);
     const [role, setRole] = useState('')
     const [_id, setId] = useState('');
+    const [arrSeries, setArrSeries] = useState('');
+    const [categoryArr, setArrCategory] = useState([]);
+
+
 
     const navigate = useNavigate();
     const isAuthenticated = useSelector(state => state?.user?.isAuthenticated);
@@ -38,14 +44,17 @@ function NavScrollExample() {
     const checkRole = async (access_token) => {
 
         let res = await checkToken(access_token);
+        if (res.status == 'error' && res.code == '401') {
+            handleClickLogout()
+            navigate('/login');
+        }
+
         setRole(res.data.role)
         setId(res.data.userId)
-    }
-
-    if (isAuthenticated === true) {
-        checkRole(access_token)
 
     }
+
+
     const HandleClickSearch = () => {
         isShowIconSearch(!showIconSearch)
         isShowHideSearch(!showSearch)
@@ -72,6 +81,39 @@ function NavScrollExample() {
             toast.error(res.msg)
         }
     }
+
+    const getSeriesById = async () => {
+
+        let res = await apiGetSeriesById(_id);
+
+        if (res.errorCode === 0 && res.data) {
+            setArrSeries(res.data);
+        }
+    }
+
+    const getAllCategory = async () => {
+        let res = await apiGetCategory(_id);
+
+        if (res.errorCode === 0 && res.data) {
+            setArrCategory(res.data);
+        }
+    }
+
+    const setShowModel = () => {
+        getSeriesById()
+        getAllCategory()
+        setShowModalCreatePost(true);
+    }
+
+    useEffect(() => {
+        getAllCategory()
+        if (isAuthenticated === true) {
+            checkRole(access_token)
+
+        }
+    }, [])
+
+
 
     return (
         <>
@@ -114,11 +156,14 @@ function NavScrollExample() {
                         {
                             isAuthenticated === true ?
                                 <>
-                                    <button className='btn btn-create' onClick={() => setShowModalCreatePost(true)}><GiFeather /> Viết bài</button>
+                                    <button className='btn btn-create' onClick={() => setShowModel()}><GiFeather /> Viết bài</button>
                                     <ModalCreatePost
                                         show={showModalCreatePost}
                                         setShow={setShowModalCreatePost}
                                         _id={_id}
+                                        categoryArr={categoryArr}
+                                        arrSeries={arrSeries}
+
                                     />
                                 </>
                                 : ''
@@ -138,7 +183,7 @@ function NavScrollExample() {
                                     }
                                     id="basic-nav-dropdown"
                                     bsPrefix="drop-down-menu"
-                                    className='nav-dropdown'
+                                    className='nav-dropdown nav-user'
                                 >
                                     <NavDropdown.Item className="nav-items" href="/user" disabled>
                                         <div className='name-text'>
@@ -150,7 +195,7 @@ function NavScrollExample() {
                                     <NavDropdown.Divider />
 
 
-                                    <NavDropdown.Item className="nav-items" href="/users">
+                                    <NavDropdown.Item className="nav-items" onClick={() => navigate(`nguoi-dung/${user.email.split('@')[0]}`)}>
                                         Xem trang cá nhân
                                     </NavDropdown.Item>
                                     <NavDropdown.Item className="nav-items" onClick={() => handleClickLogout()}>
@@ -184,25 +229,20 @@ function NavScrollExample() {
                                 }
                                 id="basic-nav-dropdown"
                                 bsPrefix="drop-down-menu"
-                                className='nav-dropdown'
+                                className='nav-dropdown nav-category'
+
                             >
-                                <NavDropdown.Item className="nav-items" href="#">
-                                    Danh mục 1
+                                {categoryArr && categoryArr.length > 0 && categoryArr.map((item, index) => {
 
-                                </NavDropdown.Item>
+                                    return (
 
+                                        <NavDropdown.Item className="nav-items" href="#" key={`category-${index}`}>
+                                            <div style={{ textDecoration: 'none', color: 'black' }}>{item.title}</div>
+                                        </NavDropdown.Item>
+                                    )
+                                })}
 
-
-                                <NavDropdown.Item className="nav-items" href="#">
-                                    Danh mục 2
-
-                                </NavDropdown.Item>
-                                <NavDropdown.Item className="nav-items">
-                                    Danh mục 3
-
-                                </NavDropdown.Item>
                             </NavDropdown>
-
                         </Nav>
                     </div>
                 </div>

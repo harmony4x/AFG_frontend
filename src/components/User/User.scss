@@ -1,5 +1,5 @@
 .user-info{
-    height: 350px;
+    
     margin: 0 auto;
     .background-color{
         height: 100%;
@@ -10,7 +10,7 @@
         height: 100px;
         img{
             
-            width: 100%;
+            max-width: 80%;
             height: 100%;
         }
     }
@@ -41,6 +41,46 @@
             .populate-content{
                 display: flex;
                 flex-direction: column;
+            }
+        }
+    }
+    .content {
+        overflow: hidden;
+
+        .tab-content{
+            .tab-pane {
+                .btn-series {
+                    height: 50px;
+                    .btn-new-series {
+                        float: right;
+                        width: 120px;
+                        
+                    }
+                }
+                
+                .card {
+                    border: none;
+
+                    .card-body {
+                        .card-title {
+                            .post-title {
+                                text-decoration: none;
+                                color: black;
+                            }
+                        }
+                        .card-detail-button {
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: space-between;
+
+                            .btn-detail {
+                                border: 1px solid black;
+                            }
+                        }
+
+                    }
+                    
+                }
             }
         }
     }

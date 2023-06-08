@@ -1,4 +1,8 @@
-
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1140px !important; /* Change the desired width here */
+  }
+}
 * {
     margin: 0;
     padding: 0;
@@ -12,6 +16,19 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  .nav-user{
+    .dropdown-menu {
+      transform: translate(-80%, 15px) !important;
+    }
+  }
+
+  .nav-category{
+    .dropdown-menu {
+      transform: translate(-90%, 30px) !important;
+    }
+  }
+ 
   
   .app-container {
     .header-container {
@@ -93,11 +110,6 @@
       }
     }
   }
-  
-  video {
-    position: fixed;
-    padding: 0;
-    width: 100vw;
-  }
+
   
   

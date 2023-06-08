@@ -14,6 +14,12 @@ const checkToken = (token) => {
     return axios.get('api/check-token');
 }
 
+const refreshNewToken = (refreshToken) => {
+
+    return axios.post('api/refresh-token', { refreshToken: refreshToken });
+}
+
+
 const apiLogout = (refreshToken) => {
 
     return axios.post('api/logout', { refreshToken });
@@ -23,5 +29,6 @@ export {
     apiLoginUser,
     apiRegisterUser,
     checkToken,
-    apiLogout
+    apiLogout,
+    refreshNewToken
 }

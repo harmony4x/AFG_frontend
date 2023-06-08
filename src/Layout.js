@@ -17,7 +17,9 @@ import DashBoard from './components/Admin/Content/Dashboard/Dashboard';
 import HomePage from './components/HomePage/HomePage';
 import User from './components/User/User';
 import Admin from './components/Admin/Admin';
+import Detail from './components/Post/DetailPost'
 import { PrivateRoute, PrivateRouteWithUser } from './routes/PrivateRoute';
+import React, { Component } from 'react';
 
 
 const NotFound = () => {
@@ -28,17 +30,21 @@ const NotFound = () => {
     )
 }
 
+
+
 const Layout = () => {
     return (
         <>
             <Routes>
                 <Route path="/" element={<App />}>
                     <Route index element={<HomePage />} />
-                    <Route path="users" element={
-                        <PrivateRouteWithUser>
-                            <User />
-                        </PrivateRouteWithUser>
+                    <Route path="nguoi-dung/:email" element={
+                        // <PrivateRouteWithUser>
+                        <User />
+                        // </PrivateRouteWithUser>
                     } />
+                    <Route path="bai-viet/:slug" element={< Detail />} />
+                    <Route path="danh-muc/:slug" element={< Detail />} />
                 </Route>
                 <Route path="admins" element={
                     <PrivateRoute>
@@ -75,4 +81,7 @@ const Layout = () => {
     )
 }
 
-export default Layout;
+export {
+    Layout,
+    NotFound
+};

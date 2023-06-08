@@ -45,7 +45,7 @@ const TableSeriesWithPaginate = (props) => {
                                 <td>{series.title}</td>
                                 <td>{series.slug}</td>
                                 <td>{series.description}</td>
-                                <td>{series.userId[0].name}</td>
+                                <td>{series.userId.name}</td>
                                 <td>{series.createdAt}</td>
                                 <td>{series.updatedAt}</td>
                                 <td className="d-flex">

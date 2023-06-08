@@ -16,9 +16,33 @@
                     font-size: 14px;
                     font-weight: 600;
                 }
+                .post-time{
+                    font-size: 12px;
+                    font-weight: 600;
+                    
+                }
+                .col-md-6.post-time-div {
+                    text-align: right;
+                }
+                .post-title{
+                    margin-right: 0;
+                    padding-right: 0;
+                    font-size: 18px;
+                    text-decoration: none;
+                    color: rgb(39,32,37);
+                    cursor: pointer;
+
+                    &:hover {
+                        font-weight: 700;
+                    }
+                }
+                
             }
 
+           
+
         }
+        
     }
     .row {
         .col-md-7{
@@ -43,12 +67,65 @@
             .tab-content {
                 .tab-pane{
                     .card-gallery {
-                        .col-md-9{
+                        .card-gallery-image{
+                            height: 200px;
+                        }
+                        .tab-display-posts{
                             .card-gallery-category{
                                 display: flex;
                                 flex-direction: row;
                                 justify-content: space-between;	
+                                .card-display {
+                                    .card-display-category {
+                                        font-size: 15px;
+                                        text-decoration: none;
+                                        color: rgb(39,32,37);
+                                        cursor: pointer;
 
+
+                                        &:hover {
+                                            font-weight: 600;
+                                        }
+                                    }
+                                }
+                                
+                                
+                            }
+                            .card-gallery-title{
+                                
+                                .card-display-title {
+                                    font-size: 20px;
+                                    text-decoration: none;
+                                    color: rgb(39,32,37);
+                                    cursor: pointer;
+                                    
+                                    &:hover {
+                                        font-weight: 800;
+                                    }
+                                }
+                            }
+                            .card-gallery-description{
+                                font-size: 12px;
+                                
+                            }
+                            .card-gallery-author{
+                                .card-avatar-image{
+                                    border-radius:50%;
+                                    width: 50px;
+                                    height: 50px;
+                                    margin: 0px;
+                                    padding: 0px;
+                                    
+                                }
+                                .card-author-name {
+                                    font-weight: 600;
+                                    margin-top: 15px;
+
+                                    .card-author-time {
+                                        font-size: 14px;
+                                        color: rgb(141,147,153);
+                                    }
+                                }
                             }
                         }
                     }

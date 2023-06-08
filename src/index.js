@@ -7,7 +7,7 @@ import { store, persistor } from './redux/store';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { PersistGate } from 'redux-persist/integration/react'
 
-import Layout from './Layout';
+import { Layout } from './Layout';
 import 'nprogress/nprogress.css';
 import "react-awesome-lightbox/build/style.css";
 

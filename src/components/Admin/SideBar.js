@@ -12,6 +12,7 @@ import {
 import { FaTachometerAlt, FaGem, FaList, FaGithub, FaRegLaughWink, FaHeart } from 'react-icons/fa';
 import sidebarBg from '../../assets/bg2.jpg';
 import { Link, useNavigate } from 'react-router-dom';
+import React, { Component } from 'react';
 
 
 const SideBar = (props) => {

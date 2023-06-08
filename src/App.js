@@ -3,6 +3,7 @@ import './App.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from "react-router-dom";
 import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 
@@ -13,7 +14,7 @@ const App = () => {
       <div className='header-container'>
         <Header />
       </div>
-      <div className='main-container'>
+      <div className='main-container mb-5'>
         <div className='sidenav-container'>
 
         </div>
@@ -21,8 +22,8 @@ const App = () => {
           <Outlet />
         </div>
       </div>
-      <div className='footer-container'>
-
+      <div className='footer-container mt-5'>
+        <Footer />
       </div>
     </div>
   );

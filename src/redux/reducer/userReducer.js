@@ -1,6 +1,6 @@
 
 import { INCREMENT, DECREMENT } from '../action/counterAction';
-import { FETCH_USER_LOGIN_SUCCESS, USER_LOGOUT_SUCCESS } from '../action/userAction';
+import { FETCH_USER_LOGIN_SUCCESS, USER_LOGOUT_SUCCESS, USER_REFRESH_TOKEN } from '../action/userAction';
 const INITIAL_STATE = {
     account: {
         access_token: '',
@@ -40,6 +40,20 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 email: '',
                 image: '',
 
+            };
+        case USER_REFRESH_TOKEN:
+            console.log(`check data: `, action?.payload)
+            console.log(`check accessToken: `, action?.payload.accessToken)
+            console.log(`check refreshTo: `, action?.payload.accessToken)
+            return {
+                ...state, account: {
+                    access_token: action?.payload?.accessToken,
+                    refresh_token: action?.payload?.refreshToken,
+                },
+                isAuthenticated: true,
+                name: action?.payload?.name,
+                email: action?.payload?.email,
+                image: action?.payload?.image,
             };
         default: return state;
     }

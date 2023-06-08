@@ -6,7 +6,12 @@ const apiGetSeries = () => {
 }
 
 const apiGetSeriesWithPaginate = (page, limit) => {
-    return axios.get(`api/series?page=${page}&limit=${limit}&population=userId`);
+    return axios.get(`api/series?population=userId&page=${page}&limit=${limit}`);
+}
+
+const apiGetSeriesById = (userId) => {
+
+    return axios.get(`api/series/${userId}`);
 }
 
 const apiCreateSeries = (title, description, userId) => {
@@ -36,5 +41,6 @@ export {
     apiCreateSeries,
     apiUpdateSeries,
     apiDeleteSeries,
-    apiGetSeriesWithPaginate
+    apiGetSeriesWithPaginate,
+    apiGetSeriesById
 }

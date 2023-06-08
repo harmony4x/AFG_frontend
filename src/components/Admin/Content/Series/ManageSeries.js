@@ -1,7 +1,7 @@
 
 import './ManageSeries.scss';
 import { FcPlus } from 'react-icons/fc';
-import { useState } from "react";
+import { useState, React } from "react";
 
 import { useEffect } from "react";
 import { apiGetSeries, apiGetSeriesWithPaginate } from '../../../../services/apiSeriesService';
