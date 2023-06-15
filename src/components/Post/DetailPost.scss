@@ -7,7 +7,144 @@
                 font-weight: 700;
             }
             .content {
-                
+                img {
+                    width: 100%;
+                }
+            }
+        }
+
+        .author {
+            
+        }
+    }
+    .comment{
+        border: 1px solid #ddd;
+
+        .comment-content {
+            display: flex;
+            .comment-textarea {
+                resize: none;
+                border: none;
+                width: 95%;
+                &:focus {
+                    outline: none !important;
+                }
+            }
+            .btn-submit{
+                width: 5%;
+                height: 40px;
+                &:focus {
+                    outline: none !important;
+                    border: none !important;
+                    background: none !important;
+                }
+                &:hover {
+                    outline: none !important;
+                    border: none !important;
+                    background: rgb(223, 244, 247);
+                }
+            }
+            margin: 30px;
+            border-bottom: 1px solid #ddd;
+        }
+        .display-comment {
+            margin: 30px;
+            .display-info {
+                display: flex;
+                margin-bottom: 5px;
+                img {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    margin-right: 15px;
+                }
+                .display-author {
+                    display: flex;
+                    flex-direction: column;
+                    margin: auto 0;
+                    .author-info {
+                        .author-name {
+                            font-size: 15px;
+                            font-weight: 700;
+                            color: #5488c7;
+                            margin-right: 5px;
+                        }
+                        .author-email {
+                            font-size: 13px;
+                            font-weight: 600;
+                            color: #8d8787;
+                            
+                        }
+                    }
+                    .author-time {
+                        font-size: 13px;
+                    }
+                }
+            }
+            .display-content {
+                .comment-like {
+                    margin-top: 10px;
+                    display: flex;
+                    gap: 5px;
+                    font-weight: 600;
+                    color: #8d8787;
+
+                    span {
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+        .display-comment-child {
+            border-left: 3px solid #ddd;
+            margin: -20px 0 0 65px;
+            
+            .display-info {
+                display: flex;
+                margin-bottom: 5px;
+                margin-left: 10px;
+                img {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    margin-right: 15px;
+                }
+                .display-author {
+                    display: flex;
+                    flex-direction: column;
+                    margin: auto 0;
+                    .author-info {
+                        .author-name {
+                            font-size: 15px;
+                            font-weight: 700;
+                            color: #5488c7;
+                            margin-right: 5px;
+                        }
+                        .author-email {
+                            font-size: 13px;
+                            font-weight: 600;
+                            color: #8d8787;
+                            
+                        }
+                    }
+                    .author-time {
+                        font-size: 13px;
+                    }
+                }
+            }
+            .display-content {
+                margin-left: 10px;
+                .comment-like {
+                    margin-top: 10px;
+                    display: flex;
+                    gap: 5px;
+                    font-weight: 600;
+                    color: #8d8787;
+
+                    span {
+                        cursor: pointer;
+                    }
+                }
             }
         }
     }

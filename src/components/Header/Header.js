@@ -15,14 +15,18 @@ import { toast } from 'react-toastify';
 import { doRefreshToken, dologout } from '../../redux/action/userAction';
 import { GiFeather } from 'react-icons/gi';
 import { BsSearch } from 'react-icons/bs';
-import { BiSearch } from 'react-icons/bi';
+import { BiSearch, BiBell } from 'react-icons/bi';
 import { MdArrowBack } from 'react-icons/md';
 import { FaBars } from 'react-icons/fa';
 import ModalCreatePost from '../HomePage/ModalCreatePost';
 import { apiGetCategory } from '../../services/apiCategoryService';
 import { apiGetSeriesById } from '../../services/apiSeriesService';
+import DefaultUser from '../../assets/avatar-user-default.png'
+import { io } from "socket.io-client";
 
-function NavScrollExample() {
+function NavScrollExample(props) {
+    const { dataUser } = props
+    const socket = io("http://localhost:5000")
     const [showModalCreatePost, setShowModalCreatePost] = useState(false)
     const [showSearch, isShowHideSearch] = useState(false);
     const [showIconSearch, isShowIconSearch] = useState(true);
@@ -30,7 +34,7 @@ function NavScrollExample() {
     const [_id, setId] = useState('');
     const [arrSeries, setArrSeries] = useState('');
     const [categoryArr, setArrCategory] = useState([]);
-
+    const [nontifications, setNontifications] = useState([])
 
 
     const navigate = useNavigate();
@@ -39,20 +43,21 @@ function NavScrollExample() {
     const refreshToken = useSelector(state => state?.user?.account?.refresh_token);
     const user = useSelector(state => state.user);
 
+
     const dispatch = useDispatch();
 
-    const checkRole = async (access_token) => {
+    const checkRole = async () => {
+        if (dataUser) {
 
-        let res = await checkToken(access_token);
-        if (res.status == 'error' && res.code == '401') {
-            handleClickLogout()
-            navigate('/login');
+            setRole(dataUser?.role)
+            setId(dataUser?.userId)
+        } else {
+            setRole('')
+            setId('')
         }
 
-        setRole(res.data.role)
-        setId(res.data.userId)
-
     }
+
 
 
     const HandleClickSearch = () => {
@@ -108,10 +113,19 @@ function NavScrollExample() {
     useEffect(() => {
         getAllCategory()
         if (isAuthenticated === true) {
-            checkRole(access_token)
-
+            checkRole()
         }
-    }, [])
+    }, [dataUser])
+
+    useEffect(() => {
+
+        // if (isAuthenticated === true && socket) {
+        //     socket.on("getNotification", (data) => {
+        //         setNontifications((prev) => [...prev, data])
+        //     })
+        // }
+
+    }, [socket])
 
 
 
@@ -156,6 +170,41 @@ function NavScrollExample() {
                         {
                             isAuthenticated === true ?
                                 <>
+
+                                    < NavDropdown
+                                        title={
+                                            <BiBell />
+                                        }
+                                        id="basic-nav-dropdown"
+                                        bsPrefix="drop-down-menu"
+                                        className='nav-dropdown nav-notification'
+                                    >
+                                        <NavDropdown.Item className="notification-title" disabled>
+                                            <div className='name-text'>
+                                                Thông báo
+                                            </div>
+                                        </NavDropdown.Item>
+
+                                        <NavDropdown.Divider />
+
+                                        {
+                                            nontifications && nontifications.map((nontification, index) => {
+
+                                                return (
+
+                                                    <NavDropdown.Item key={`nontification-${index}`} className="nav-items row" onClick={() => navigate(`bai-viet/${nontification.slug}`)}>
+                                                        <img className='avatar-image' src={nontification.senderImage} />
+                                                        <div className='nav-item-content'>
+                                                            {`${nontification.senderName} đã bình luận vào bài viết của bạn`}
+                                                        </div>
+                                                    </NavDropdown.Item>
+                                                )
+
+                                            })
+                                        }
+
+
+                                    </NavDropdown>
                                     <button className='btn btn-create' onClick={() => setShowModel()}><GiFeather /> Viết bài</button>
                                     <ModalCreatePost
                                         show={showModalCreatePost}
@@ -175,6 +224,7 @@ function NavScrollExample() {
                                     <button className='btn-login' onClick={() => handleClickLogin()}>Log In</button>
                                     <button className='btn-signup' onClick={() => handleClickSignUp()}>Sign Up</button>
                                 </> :
+
                                 < NavDropdown
                                     title={
                                         <div className='avatar-icon'>
@@ -215,8 +265,8 @@ function NavScrollExample() {
                         <div className='category-item'>Danh muc 1</div>
                         <div className='category-item'>Danh muc 1</div>
                         <div className='category-item'>Danh muc 1</div>
-                        <div className='category-item'>Danh muc 1</div>
-                        <div className='category-item'>Danh muc 5</div>
+
+
                     </div>
                     <div className='col-md-3 right-category'>
                         <Nav>

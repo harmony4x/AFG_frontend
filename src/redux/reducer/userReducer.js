@@ -11,6 +11,7 @@ const INITIAL_STATE = {
     name: '',
     email: '',
     image: '',
+    _id: '',
 };
 const userReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
@@ -25,6 +26,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 name: action?.payload?.name,
                 email: action?.payload?.email,
                 image: action?.payload?.image,
+                _id: action?.payload?._id,
             };
 
         case USER_LOGOUT_SUCCESS:
@@ -39,6 +41,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 name: '',
                 email: '',
                 image: '',
+                _id: ''
 
             };
         case USER_REFRESH_TOKEN:

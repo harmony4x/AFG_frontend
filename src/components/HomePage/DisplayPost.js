@@ -30,6 +30,7 @@ const DisplayNewPost = (props) => {
 
 
     return (
+
         <div className='post-flex'>
             {postNewArr && postNewArr.length > 0 && postNewArr.map((items, index) => {
                 const timeString = items.updatedAt

@@ -14,8 +14,11 @@ import { useParams } from 'react-router-dom';
 import { NotFound } from '../../Layout';
 
 
-const User = () => {
+const User = (props) => {
     const { email } = useParams()
+
+
+
     const [show, setShow] = useState(false)
     const [dataUser, setDataUser] = useState('')
     const [_id, setId] = useState('');
@@ -27,6 +30,9 @@ const User = () => {
     const [guestData, setGuestData] = useState('')
     const [matchData, setMatchData] = useState(false)
     const [notFound, setNotFound] = useState(false)
+
+
+
     const handleShowModalUpdateUser = () => {
         setShow(true)
     }

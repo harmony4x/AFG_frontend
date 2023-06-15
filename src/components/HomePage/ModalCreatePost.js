@@ -28,8 +28,6 @@ const ModalCreatePost = (props) => {
     const [series, setSeries] = useState('default');
 
 
-
-
     const [clickSubmit, setClickSubmit] = useState(true)
 
     const handleClose = () => {

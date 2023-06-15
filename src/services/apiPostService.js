@@ -24,10 +24,16 @@ const getPostBySlug = (slug) => {
 }
 
 
+const getCommentByPostId = (postId) => {
+    return axios.get(`api/comments/${postId}`);
+}
+
+
 
 export {
     apiCreatePost,
     getAllPost,
     getPostBySlug,
+    getCommentByPostId,
 
 }

@@ -22,6 +22,9 @@ const ModalCreateUser = (props) => {
             setArrRole(res.data);
         }
     }
+
+
+
     useEffect(() => {
         getRole()
     }, [])
@@ -87,6 +90,7 @@ const ModalCreateUser = (props) => {
 
         }
     }
+
 
     return (
         <>

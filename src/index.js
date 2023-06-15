@@ -12,6 +12,8 @@ import 'nprogress/nprogress.css';
 import "react-awesome-lightbox/build/style.css";
 
 
+
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>

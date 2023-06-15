@@ -5,7 +5,8 @@ import './homepage.scss';
 
 
 
-const HomePage = () => {
+const HomePage = (props) => {
+
     const [postNewArr, setNewPostArr] = useState([]);
     const [postHotArr, setHotPostArr] = useState([]);
     const [postTabHotArr, setHotTabPostArr] = useState([]);
